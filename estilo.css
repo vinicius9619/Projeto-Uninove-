@@ -1,0 +1,35 @@
+*{
+    margin:0;
+    padding: 0;
+    max-width: 100vw;
+    max-height: 100vh;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+body{
+    display: grid;
+    grid-template-areas: 'a b c';
+    grid-template-columns: 0.5fr 3fr 1fr;
+}
+main{
+    background-image: url(imagens/bg.gif);
+    background-size: cover;
+    width: 800px;
+    height: 720px;
+    grid-area: b;
+
+}
+.naveJogador{
+    background-image: url(imagens/naveJogador.gif);
+    width: 34px;
+    height: 44px;
+    position: absolute;
+}
+.container{
+    height: 100px;
+    width: 800px;
+    background-color: red;
+    grid-area: b; 
+    background-image: url(imagens/planeta.png);
+}
