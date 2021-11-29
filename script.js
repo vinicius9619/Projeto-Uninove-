@@ -56,22 +56,23 @@ function controlaJogador(){
     jog.style.top = posicaoJY + "px";
     jog.style.left = posicaoJX + "px";
 
-    var tamJW = 34;
-    var tamJH = 44;
-    //fundo fisico
+    var tamJW = 59;
+    var tamJH = 59;
     
-    if(posicaoJY+ tamJH>=tamTelaH||posicaoJY<=120) 
+    //barra
+    
+    if(posicaoJY+ tamJH>=tamTelaH||posicaoJY<=125) 
     {
     posicaoJY+=(velocidadeJ*direcaoJY)*(-1);
     }
-    if(posicaoJX+ tamJW>=tamTelaW||posicaoJX<=160) 
+    if(posicaoJX+ tamJW>=tamTelaW||posicaoJX<=115)
     {
     posicaoJX+=(velocidadeJ*direcaoJX)*(-1);
     }
 }
 
 function gameLoop() {
-    if(jogo === true){
+    if(jogo = true){
 
         controlaJogador();
     }
@@ -82,15 +83,14 @@ function gameLoop() {
 //Inicio
 function inicia() {
     jogo =true;
-    
     tamTelaH = window.innerHeight;
-    tamTelaW = 945;
+    tamTelaW = 925;
 
     //Inicialização Jogador:
     direcaoJX = direcaoJY = 0;
-    posicaoJX = tamTelaW/2;
-    posicaoJY = tamTelaH/2;
-    velocidadeJ = 5;
+    posicaoJX = tamTelaW/1.9;
+    posicaoJY = tamTelaH/1.2;
+    velocidadeJ = 7;
     jog = document.getElementById("naveJogador");
     jog.style.top = posicaoJY + "px";
     jog.style.left = posicaoJX + "px";

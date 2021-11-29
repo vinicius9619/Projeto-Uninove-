@@ -4,26 +4,34 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defensor do Planeta! - Proteja nosso planeta da invasão</title>
     <link rel="stylesheet" href="estilo.css">
     <script src="script.js"></script>
-    <title>Defenda o planeta Terra!</title>
     <link rel="shortcut icon" type="imagem/png" href="imagens/icone.png">
 </head>
 <body>
-    <!--  -->
-    <div id="menu" class="menu"></div>
-    <div id="gameover" class="gameover"></div>
-    <!-- Jogo -->
-    <main>
-        <div id="naveJogador" class=" naveJogador"></div>
-        <div id="menu" class="menu"></div>
-        <div id="gameover" class="gameover"></div>
-    </main>
-   
     <div id="container" class="container">
-        <div id="planeta" class="planeta"></div>
-        <div id="planetaVida" class="planetaVida"></div>
-        <div id="vidaNave" class=" vidaNave"
-    </div>
+        <aside></aside>
+        <main id="game" class="game">
+            <div id="naveJogador" class="naveJogador"></div>
+            <div id="container1" class="container1">
+                <h3 class="saude">Saúde do Planeta</h3>
+                <div class="planetaPNG"></div>
+                <div class="barraVida"></div>
+                <h3 class="vidasRestantes">Vidas Restantes</h3>
+                <div id="vidasNave" class="vidasNave">
+                    <div id="vida1" class="vida1"></div>
+                    <div id="vida2" class="vida2"></div>
+                    <div id="vida3" class="vida3"></div>
+                </div>
+            </div>
+        </main>
+        <nav id="navegacao" class="navegacao"><h1>Defensor do Planeta</h1>
+            <h3>Objetivo: Proteja o planeta Terra da invasão da alienígena!</h3>
+            <div id="pontuacao" class="pontuacao">Pontuação</div>
+            <button id="btnPausa" class="btnPausa">Pausar</button>
+            <button id="btnMenu" class="btnMenu">Voltar ao Menu</button>
+        </nav>
+    </div> 
 </body>
 </html>
