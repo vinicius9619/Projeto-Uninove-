@@ -65,7 +65,7 @@ function controlaInimigo(){
 			pi+=velInimigo;
 			inimigoTotal[i].style.top=pi+"px";
 			if(pi>tamTelaH){
-				vidaPlaneta-=10;
+				vidaPlaneta-=35;
 				
 				perigo(2,inimigoTotal[i].offsetLeft,null);
 				inimigoTotal[i].remove();
@@ -74,6 +74,9 @@ function controlaInimigo(){
 	}
 }
 
+function reset(){
+	pontos.value=0;
+ }
 
 function atira(x,y){
 
@@ -146,7 +149,7 @@ function perigo(tipo,x){
 	        att1.value="perigo";
 	         att2.value="top:"+(tamTelaH-100)+"px;left:"+(x-0)+"px;";
 	     } 
-	     att5.value="som/perigo.mp3";
+	     att5.value="som/perigo.ogg";
 	    att6.value="som"+iSom;
 	    perigo.setAttributeNode(att1);
 	    perigo.setAttributeNode(att2);
@@ -184,7 +187,7 @@ function criaExplosao(tipo,x,y){ //Tipo 1=AR
 		att2.value="top:"+y+"px;left:"+x+"px;";
 		att4.value="imagens/explosaoInimigo.gif?"+new Date();
 	}
-	att5.value="som/explosao.mp3?"+new Date();
+	att5.value="som/explosao.ogg?"+new Date();
 	att6.value="som"+iSom;
 	explosaoInimigo.setAttributeNode(att1);
 	explosaoInimigo.setAttributeNode(att2);
@@ -233,9 +236,11 @@ function gerenciaGame(){
 function gameLoop(){
 	if(jogo){
 		//FUNÇÕES DE CONTROLE
+	
 		controlaJogador();
 		controleTiros();
 		controlaInimigo();
+	
 	}
 	gerenciaGame();
 	frames=requestAnimationFrame(gameLoop);
@@ -265,7 +270,8 @@ function reinicia(){
 	jogador.style.top=posJy+"px";
 	jogador.style.left=posJx+"px";
 	jogo=true;
-	tmpCriaInimigo=setInterval(criaInimigo,2000);
+	tmpCriaInimigo=setInterval(criaInimigo,900);
+	
 	gameLoop();
 }
 function mostrar(){
@@ -276,6 +282,8 @@ function mostrar(){
 function inicia(){
 	jogo=false;
 	vPaineltxtPontos=document.getElementById("pontos");
+	
+	
 	//Ini Tela
 	tamTelaH=window.innerHeight;
 	tamTelaW=innerWidth;
@@ -305,9 +313,9 @@ function inicia(){
 	telaMsg.style.display="block";
 	document.getElementById("btnJogar").addEventListener("click",reinicia);
 	document.getElementById("btnJogar").addEventListener("click",mostrar);
-
+	clearInterval(tmpCriaInimigo);
+	
 }
-
 
 window.addEventListener("load",inicia);
 document.addEventListener("keydown",teclaDw);
