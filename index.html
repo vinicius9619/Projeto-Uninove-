@@ -1,37 +1,35 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Defensor do Planeta! - Proteja nosso planeta da invasão</title>
-    <link rel="stylesheet" href="estilo.css">
-    <script src="script.js"></script>
-    <link rel="shortcut icon" type="imagem/png" href="imagens/icone.png">
-</head>
-<body>
-    <div id="container" class="container">
-        <aside></aside>
-        <main id="game" class="game">
-            <div id="naveJogador" class="naveJogador"></div>
-            <div id="container1" class="container1">
-                <h3 class="saude">Saúde do Planeta</h3>
-                <div class="planetaPNG"></div>
-                <div class="barraVida"></div>
-                <h3 class="vidasRestantes">Vidas Restantes</h3>
-                <div id="vidasNave" class="vidasNave">
-                    <div id="vida1" class="vida1"></div>
-                    <div id="vida2" class="vida2"></div>
-                    <div id="vida3" class="vida3"></div>
-                </div>
-            </div>
-        </main>
-        <nav id="navegacao" class="navegacao"><h1>Defensor do Planeta</h1>
-            <h3>Objetivo: Proteja o planeta Terra da invasão da alienígena!</h3>
-            <div id="pontuacao" class="pontuacao">Pontuação</div>
-            <button id="btnPausa" class="btnPausa">Pausar</button>
-            <button id="btnMenu" class="btnMenu">Voltar ao Menu</button>
-        </nav>
-    </div> 
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Defensor do Planeta! - Proteja nosso planeta da invasão</title>
+        <link rel="stylesheet" href="estilo.css">
+        <script src="script.js"></script>
+        <link rel="shortcut icon" type="imagem/png" href="imagens/icone.png">
+    </head>
+    <body>
+        <audio src='som/tiro.mp3'></audio>
+  <div id="naveJogador" class="naveJogador"></div>
+  <div id="container" class="container">
+        <header id="painel" class="painel">
+            <h3>Saúde do Planeta</h3> 
+            <div id="pontuacao">
+                <label>Pontuação<br></label>
+                    <input type="text" id="pontos" value=0  size="10"></div>
+        <div id="planetaPng" class="planetaPng"></div>
+        <div id="medidorPlaneta" class="medidorPlaneta">
+            <div id="barraPlaneta" class="barraPlaneta"></div>
+        </div>
+        </header>
+        </div>
+    
+        <div id="telaMsg" class="telaMsg">
+            <button id="btnJogar" class="btnJogar">Jogar</button>
+        </div>
+        <div id="telaMsg" class="telaMsg">
+            <button id="btnJogar" class="btnJogar">Jogar</button>
+        </div>
+    </body>
 </html>

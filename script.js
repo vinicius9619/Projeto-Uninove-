@@ -1,102 +1,314 @@
-var direcaoJX, direcaoJY, jog, velocidadeJ, posicaoJX, posicaoJY;
-var tamTelaW, tamTelaH;
+var diryJ,dirxJ,jogador,velJogador,posJx,posJy;
+var velTiro;
+var tamTelaW,tamTelaH;
 var jogo;
 var frames;
+var velInimigo,tmpCriaInimigo;
+var inimigoTotal;
+var vidaPlaneta,barraPlaneta;
+var ie,iSom;
+var telaMsg;
+var show;
+var pontos;
+var vPaineltxtPontos;
+var pontos=100;
 
-
-//Pressionar as Teclas
-function teclaDw() {
-
-    var tecla = event.keyCode;
-    if (tecla == 38) {//Cima
-        
-        direcaoJY = -1;
-    }
-    else if (tecla == 40) {//Baixo
-        direcaoJY = +1;
-    }
-    if (tecla == 37) {//Esquerda
-       direcaoJX = -1;
-    }
-    else if (tecla == 39) {//Direita
-        direcaoJX = +1;
-    }
-    if (tecla == 32) {//TIRO
-        atira(posicaoJX+17,posicaoJY);
-    }
-
+function teclaDw(){
+	var tecla=event.keyCode;
+	if(tecla==38){//Cima
+		diryJ=-1;
+	}else if(tecla==40){//Baixo
+		diryJ=1;
+	}
+	if(tecla==37){//Esquerda
+		dirxJ=-1;
+	}else if(tecla==39){//Direita
+		dirxJ=1;
+	}
+	if(tecla==32){//Espaço / Tiro
+		//TIRO
+		atira(posJx+17,posJy);
+		const audio =document.querySelector('audio')
+		audio.currentTime = 0
+		audio.play();
+	}
+}
+function teclaUp(){
+	var tecla=event.keyCode;
+	if((tecla==38)||(tecla==40)){
+		diryJ=0;
+	}
+	if((tecla==37)||(tecla==39)){//Esquerda
+		dirxJ=0;
+	}
+}
+function criaInimigo(){
+	if(jogo){
+		var y=0;
+		var x=Math.random()*tamTelaW;
+		var inimigo=document.createElement("div");
+		var att1=document.createAttribute("class");
+		var att2=document.createAttribute("style");
+		att1.value="inimigo";
+		att2.value="top:"+y+"px;left:"+x+"px;";
+		inimigo.setAttributeNode(att1);
+		inimigo.setAttributeNode(att2);
+		document.body.appendChild(inimigo);
+	}
+}
+function controlaInimigo(){
+	inimigoTotal=document.getElementsByClassName("inimigo");
+	var tam=inimigoTotal.length;
+	for(var i=0;i<tam;i++){
+		if(inimigoTotal[i]){
+			var pi=inimigoTotal[i].offsetTop;
+			pi+=velInimigo;
+			inimigoTotal[i].style.top=pi+"px";
+			if(pi>tamTelaH){
+				vidaPlaneta-=10;
+				
+				perigo(2,inimigoTotal[i].offsetLeft,null);
+				inimigoTotal[i].remove();
+			}
+		}
+	}
 }
 
-//Soltar Teclas
-function teclaUp() {
-    var tecla = event.keyCode;
-    if ((tecla == 38) || (tecla == 40)) {//Cima ou Baixo
-        direcaoJY = 0;
-    }
-    if ((tecla == 37) || (tecla == 39)) {//Esquerda ou Direita
-       direcaoJX = 0;
-    }
 
-}
-//Tiro
 function atira(x,y){
- var t=document.createElement("div");
- var att1=document.createAttribute("class");
- var att2=document.createAttribute("style");
-    att1.value="tiro";
-    att2.value="top:"+y+"px;left:"+x+"px";
-    t.setAttributeNode(att1);
-    t.setAttributeNode(att2);
-    document.body.appendChild(t);
+
+	var t=document.createElement("div");
+	var att1=document.createAttribute("class");
+	var att2=document.createAttribute("style");
+	att1.value="tiro";
+	att2.value="top:"+y+"px;left:"+x+"px";
+	t.setAttributeNode(att1);
+	t.setAttributeNode(att2);
+	document.body.appendChild(t);
+
 }
-//controles do jogador
+
+function controleTiros(){
+	var tiros=document.getElementsByClassName("tiro");
+	var tam=tiros.length;
+	for(var i=0;i<tam;i++){
+		if(tiros[i]){
+			var pt=tiros[i].offsetTop;
+			pt-=velTiro;
+			tiros[i].style.top=pt+"px";
+			colisaoTiroInimigo(tiros[i]);
+			if(pt<75){
+				tiros[i].remove();
+			}
+		}
+	}
+}
+function colisaoTiroInimigo(tiro){
+	var tam=inimigoTotal.length;
+	for(var i=0;i<tam;i++){
+		if(inimigoTotal[i]){
+			if(
+				(
+					(tiro.offsetTop<=(inimigoTotal[i].offsetTop+75))&& //Cima tiro com baixo bomba
+					((tiro.offsetTop+39)>=(inimigoTotal[i].offsetTop)) //Baixo tiro com cima bomba
+				)
+				&&
+				(
+					(tiro.offsetLeft<=(inimigoTotal[i].offsetLeft+75))&& //Esquerda tiro com direita bomba
+					((tiro.offsetLeft+39)>=(inimigoTotal[i].offsetLeft)) //Direita Tito  com esquerda Bomba
+				)
+			){  vPaineltxtPontos.value=pontos;
+				pontos=pontos+100;
+				
+				criaExplosao(1,inimigoTotal[i].offsetLeft+0,inimigoTotal[i].offsetTop);
+				inimigoTotal[i].remove();
+				tiro.remove();
+			}
+		}
+	}
+				
+}
+function perigo(tipo,x){
+	    if(document.getElementById("perigo"+(ie-1))){
+	        document.getElementById("perigo"+(ie-1)).remove();
+	    }
+	    var perigo=document.createElement("div");
+	    var som=document.createElement("audio");
+	    //atributos para div
+	    var att1=document.createAttribute("class");
+	    var att2=document.createAttribute("style");
+	    var att3=document.createAttribute("id");
+	    //atributos para audio
+	    var att5=document.createAttribute("src");
+	    var att6=document.createAttribute("id");
+	    att3.value="perigo"+ie;
+	    if(tipo==2){
+	        att1.value="perigo";
+	         att2.value="top:"+(tamTelaH-100)+"px;left:"+(x-0)+"px;";
+	     } 
+	     att5.value="som/perigo.mp3";
+	    att6.value="som"+iSom;
+	    perigo.setAttributeNode(att1);
+	    perigo.setAttributeNode(att2);
+	    perigo.setAttributeNode(att3);
+	    som.setAttributeNode(att5);
+	    som.setAttributeNode(att6);
+	    perigo.appendChild(som);
+	    document.body.appendChild(perigo);
+	    document.getElementById("som"+iSom).play();
+		 ie++;
+	    iSom++;
+	
+	}
+	
+function criaExplosao(tipo,x,y){ //Tipo 1=AR
+	if(document.getElementById("explosaoInimigo"+(ie-2))){
+		document.getElementById("explosaoInimigo"+(ie-2)).remove();
+	}
+	var explosaoInimigo=document.createElement("div");
+	var img=document.createElement("img");
+	var som=document.createElement("audio");
+	//Atributos para div
+	var att1=document.createAttribute("class");
+	var att2=document.createAttribute("style");
+	var att3=document.createAttribute("id");
+	//Atributo para imagem
+	var att4=document.createAttribute("src");
+	//Atributos para audio
+	var att5=document.createAttribute("src");
+	var att6=document.createAttribute("id");
+
+	att3.value="explosaoInimigo"+ie;
+	if(tipo==1){
+		att1.value="explosaoInimigo";
+		att2.value="top:"+y+"px;left:"+x+"px;";
+		att4.value="imagens/explosaoInimigo.gif?"+new Date();
+	}
+	att5.value="som/explosao.mp3?"+new Date();
+	att6.value="som"+iSom;
+	explosaoInimigo.setAttributeNode(att1);
+	explosaoInimigo.setAttributeNode(att2);
+	explosaoInimigo.setAttributeNode(att3);
+	img.setAttributeNode(att4);
+	som.setAttributeNode(att5);
+	som.setAttributeNode(att6);
+	explosaoInimigo.appendChild(img);
+	explosaoInimigo.appendChild(som);
+	document.body.appendChild(explosaoInimigo);
+	document.getElementById("som"+iSom).play();
+	ie++;
+	iSom++;
+}
+
 function controlaJogador(){
-    posicaoJY+= direcaoJY*velocidadeJ;
-    posicaoJX += direcaoJX*velocidadeJ;
-    jog.style.top = posicaoJY + "px";
-    jog.style.left = posicaoJX + "px";
+	posJy+=diryJ*velJogador;
+	posJx+=dirxJ*velJogador;
+	jogador.style.top=posJy+"px";
+	jogador.style.left=posJx+"px";
+	
+	var tamJW = 34;
+    var tamJH = 44;
 
-    var tamJW = 59;
-    var tamJH = 59;
-    
-    //barra
-    
-    if(posicaoJY+ tamJH>=tamTelaH||posicaoJY<=125) 
+	if(posJy+ tamJH>=tamTelaH||posJy<=75) 
     {
-    posicaoJY+=(velocidadeJ*direcaoJY)*(-1);
+		posJy+=(velJogador*diryJ)*(-1);
     }
-    if(posicaoJX+ tamJW>=tamTelaW||posicaoJX<=115)
+    if(posJx+ tamJW>=tamTelaW||posJx<=0) 
     {
-    posicaoJX+=(velocidadeJ*direcaoJX)*(-1);
+    posJx+=(velJogador*dirxJ)*(-1);
     }
 }
 
-function gameLoop() {
-    if(jogo = true){
+function gerenciaGame(){
+	barraPlaneta.style.width=vidaPlaneta+"px";
+	if(vidaPlaneta<=0){
+		jogo=false;
+		clearInterval(tmpCriaInimigo);
+		telaMsg.style.backgroundImage="url('imagens/gameover.gif')";
+		telaMsg.style.display="block";
+		show.style.display="none";
+	}
+}
 
-        controlaJogador();
-    }
-    frames = requestAnimationFrame(gameLoop);
+function gameLoop(){
+	if(jogo){
+		//FUNÇÕES DE CONTROLE
+		controlaJogador();
+		controleTiros();
+		controlaInimigo();
+	}
+	gerenciaGame();
+	frames=requestAnimationFrame(gameLoop);
+}
+
+function reinicia(){
+	vPaineltxtPontos=document.getElementById("pontos");
+	inimigoTotal=document.getElementsByClassName("inimigo");
+	var tam=inimigoTotal.length;
+	for(var i=0;i<tam;i++){
+		if(inimigoTotal[i]){
+			inimigoTotal[i].remove();
+		}
+	}
+	var tam=inimigoTotal.length;
+	for(var i=0;i<tam;i++){
+		if(inimigoTotal[i]){
+			inimigoTotal[i].remove();
+		}
+	}	
+	telaMsg.style.display="none";
+	clearInterval(tmpCriaInimigo);
+	cancelAnimationFrame(frames);
+	vidaPlaneta=300;
+	posJx=tamTelaW/2;
+	posJy=tamTelaH/2;
+	jogador.style.top=posJy+"px";
+	jogador.style.left=posJx+"px";
+	jogo=true;
+	tmpCriaInimigo=setInterval(criaInimigo,2000);
+	gameLoop();
+}
+function mostrar(){
+	show=document.getElementById("container");
+	show.style.display="block";
+
+}
+function inicia(){
+	jogo=false;
+	vPaineltxtPontos=document.getElementById("pontos");
+	//Ini Tela
+	tamTelaH=window.innerHeight;
+	tamTelaW=innerWidth;
+
+	//Ini Jogador
+	dirxJ=diryJ=0;
+	posJx=tamTelaW/2;
+	posJy=tamTelaH/2;
+	velJogador=velTiro=10;
+	jogador=document.getElementById("naveJogador");
+	jogador.style.top=posJy+"px";
+	jogador.style.left=posJx+"px";
+
+	//Controles das bombas
+	velInimigo= 3;
+	//Controles do planeta
+	vidaPlaneta=300;
+	barraPlaneta=document.getElementById("barraPlaneta");
+	barraPlaneta.style.width=vidaPlaneta+"px";
+
+	//Controles de explosão
+	ie=iSom=0;
+
+	//Telas
+	telaMsg=document.getElementById("telaMsg");
+	telaMsg.style.backgroundImage="url('imagens/intro.gif')";
+	telaMsg.style.display="block";
+	document.getElementById("btnJogar").addEventListener("click",reinicia);
+	document.getElementById("btnJogar").addEventListener("click",mostrar);
+
 }
 
 
-//Inicio
-function inicia() {
-    jogo =true;
-    tamTelaH = window.innerHeight;
-    tamTelaW = 925;
-
-    //Inicialização Jogador:
-    direcaoJX = direcaoJY = 0;
-    posicaoJX = tamTelaW/1.9;
-    posicaoJY = tamTelaH/1.2;
-    velocidadeJ = 7;
-    jog = document.getElementById("naveJogador");
-    jog.style.top = posicaoJY + "px";
-    jog.style.left = posicaoJX + "px";
-    gameLoop();
-
-}
-window.addEventListener("load", inicia);
-document.addEventListener("keydown", teclaDw);
-document.addEventListener("keyup", teclaUp);
+window.addEventListener("load",inicia);
+document.addEventListener("keydown",teclaDw);
+document.addEventListener("keyup",teclaUp);
