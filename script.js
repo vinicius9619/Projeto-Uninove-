@@ -44,8 +44,8 @@ function teclaUp(){
 }
 function criaInimigo(){
 	if(jogo){
-		var y=0;
-		var x=Math.random()*tamTelaW;
+		var y=75;
+		var x=Math.random()*1000;
 		var inimigo=document.createElement("div");
 		var att1=document.createAttribute("class");
 		var att2=document.createAttribute("style");
@@ -65,7 +65,7 @@ function controlaInimigo(){
 			pi+=velInimigo;
 			inimigoTotal[i].style.top=pi+"px";
 			if(pi>tamTelaH){
-				vidaPlaneta-=35;
+				vidaPlaneta-=30;
 				
 				perigo(2,inimigoTotal[i].offsetLeft,null);
 				inimigoTotal[i].remove();
@@ -73,10 +73,6 @@ function controlaInimigo(){
 		}
 	}
 }
-
-function reset(){
-	pontos.value=0;
- }
 
 function atira(x,y){
 
@@ -265,12 +261,13 @@ function reinicia(){
 	clearInterval(tmpCriaInimigo);
 	cancelAnimationFrame(frames);
 	vidaPlaneta=300;
+	pontos=100;
 	posJx=tamTelaW/2;
 	posJy=tamTelaH/2;
 	jogador.style.top=posJy+"px";
 	jogador.style.left=posJx+"px";
 	jogo=true;
-	tmpCriaInimigo=setInterval(criaInimigo,900);
+	tmpCriaInimigo=setInterval(criaInimigo,1200);
 	
 	gameLoop();
 }
